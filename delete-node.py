@@ -22,6 +22,14 @@ def printLevelOrder(root):
         if node.right is not None:
             queue.append(node.right)
 
+def inorder(root):
+    if root is None:
+        return
+    inorder(root.left)
+    print(root.data, end = ' ')
+    inorder(root.right)
+
+    
 def deleteDeepest(root,last):
     if root is None:
         return
@@ -29,17 +37,23 @@ def deleteDeepest(root,last):
     rq.append(root)
     while(len(rq)>0):
         node=rq.pop(0)
-        if node.left is not None:
-            if node.left.data == last.data:
-                node.left = None
-            else:
-                rq.append(node.left)
-        if node.right is not None:
-            if node.right.data == last.data:
+        if node == last:
+            node = None
+            return
+        if node.right:
+            if node.right == last:
                 node.right = None
+                return
             else:
                 rq.append(node.right)
-    return node
+
+        if node.left:
+            if node.left == last:
+                node.left = None
+                return
+            else:
+                rq.append(node.left)
+        
 
     
 def deleteNode(root,dele):
@@ -66,16 +80,22 @@ def deleteNode(root,dele):
     
 
 
-
-root = Node(1)
-root.left = Node(2)
-root.right=Node(3)
-root.left.left=Node(4)
-root.left.right=Node(5)
-
-print("level order traveral of binary tree before deletion is:")
-printLevelOrder(root)
-
-print("\nlevel order traversal of binary tree after deletion is:")
-deleteNode(root,2)
-printLevelOrder(root)
+if __name__=='__main__':
+    root = Node(10) 
+    root.left = Node(11) 
+    root.left.left = Node(7) 
+    root.left.right = Node(12) 
+    root.right = Node(9) 
+    root.right.left = Node(15) 
+    root.right.right = Node(8) 
+    print("The tree before the deletion:") 
+    inorder(root)
+    print()
+    printLevelOrder(root)
+    key = 11
+    deleteNode(root, key) 
+    print() 
+    print("The tree after the deletion;") 
+    inorder(root)
+    print()
+    printLevelOrder(root)
